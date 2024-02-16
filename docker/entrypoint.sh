@@ -1,59 +1,62 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ -z "$LISTEN" ]; then
+if [[ -z "$LISTEN" ]]; then
     LISTEN="0.0.0.0"
 fi
 
-if [ -z "$DB" ]; then
+if [[ -z "$DB" ]]; then
     DB="bolt"
 fi
 
-if [ -z "$FILE" ]; then
+if [[ -z "$FILE" ]]; then
     FILE="/var/lib/rbaskets/baskets.db"
 fi
 
-args="-l $LISTEN -db $DB -file $FILE"
+args=(
+    -l "$LISTEN" -db "$DB" -file "$FILE"
+)
 
-if [ -n "$CONN" ]; then
-    args="$args -conn $CONN"
+if [[ -n "$CONN" ]]; then
+    args+=(-conn "$CONN")
 fi
 
-if [ -n "$PORT" ]; then
-    args="$args -p $PORT"
+if [[ -n "$PORT" ]]; then
+    args+=(-p "$PORT")
 fi
 
-if [ -n "$PAGE" ]; then
-    args="$args -page $PAGE"
+if [[ -n "$PAGE" ]]; then
+    args+=(-page "$PAGE")
 fi
 
-if [ -n "$SIZE" ]; then
-    args="$args -size $SIZE"
+if [[ -n "$SIZE" ]]; then
+    args+=(-size "$SIZE")
 fi
 
-if [ -n "$MAXSIZE" ]; then
-    args="$args -maxsize $MAXSIZE"
+if [[ -n "$MAXSIZE" ]]; then
+    args+=(-maxsize "$MAXSIZE")
 fi
 
-if [ -n "$TOKEN" ]; then
-    args="$args -token $TOKEN"
+if [[ -n "$TOKEN" ]]; then
+    args+=(-token "$TOKEN")
 fi
 
-if [ -n "$BASKET" ]; then
-    args="$args -basket $BASKET"
+if [[ -n "$BASKET" ]]; then
+    args+=(-basket "$BASKET")
 fi
 
-if [ -n "$PATHPREFIX" ]; then
-    args="$args -prefix $PATHPREFIX"
+if [[ -n "$PATHPREFIX" ]]; then
+    args+=(-prefix "$PATHPREFIX")
 fi
 
-if [ -n "$MODE" ]; then
-    args="$args -mode $MODE"
+if [[ -n "$MODE" ]]; then
+    args+=(-mode "$MODE")
 fi
 
-if [ -n "$THEME" ]; then
-    args="$args -theme $THEME"
+if [[ -n "$THEME" ]]; then
+    args+=(-theme "$THEME")
 fi
 
-cmd="/bin/rbaskets $args"
-echo "Executing: $cmd"
-exec $cmd
+set -- "/bin/rbaskets" "${args[@]}"
+echo "Executing: $*"
+
+"$@"

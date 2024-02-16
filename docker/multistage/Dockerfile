@@ -16,7 +16,7 @@ RUN GIT_VERSION="$(git describe --dirty='*' || git symbolic-ref -q --short HEAD)
 # Stage 2. Packaging into alpine
 FROM alpine:latest
 LABEL maintainer="vladimir_l@gmx.net"
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add bash ca-certificates
 VOLUME /var/lib/rbaskets
 COPY docker/entrypoint.sh /bin/entrypoint
 COPY --from=builder /go/bin/rbaskets /bin/rbaskets
