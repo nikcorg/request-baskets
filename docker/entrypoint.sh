@@ -41,7 +41,11 @@ if [[ -n "$TOKEN" ]]; then
 fi
 
 if [[ -n "$BASKET" ]]; then
-    args+=(-basket "$BASKET")
+    while IFS="," read -ra baskets; do
+        for basket in "${baskets[@]}"; do
+            args+=(-basket "$basket")
+        done
+    done <<<"$BASKET"
 fi
 
 if [[ -n "$PATHPREFIX" ]]; then
