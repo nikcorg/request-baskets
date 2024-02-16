@@ -2,7 +2,7 @@
 # Version 1.3
 
 # Stage 1. Building service
-FROM golang:latest as builder
+FROM golang:1.21-alpine3.19 as builder
 WORKDIR /go/src/rbaskets
 COPY . .
 RUN GIT_VERSION="$(git describe --dirty='*' || git symbolic-ref -q --short HEAD)" \
@@ -14,7 +14,7 @@ RUN GIT_VERSION="$(git describe --dirty='*' || git symbolic-ref -q --short HEAD)
   -o /go/bin/rbaskets
 
 # Stage 2. Packaging into alpine
-FROM alpine:latest
+FROM alpine:3.19
 LABEL maintainer="vladimir_l@gmx.net"
 RUN apk --no-cache add bash ca-certificates
 VOLUME /var/lib/rbaskets
